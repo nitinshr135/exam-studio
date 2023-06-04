@@ -46,7 +46,7 @@ export default function Login() {
           href={"/signup"}
           className="flex flex-row gap-1 hover:underline cursor-pointer"
         >
-          Not a member? <p className="font-medium">Signup</p>
+          Don&apos;t have an account? <p className="font-medium">Signup</p>
         </Link>
       </div>
     </>

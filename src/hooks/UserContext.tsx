@@ -77,6 +77,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const anonymousSignup = async () => {
+    setLoading(true);
+    const promise = account.createAnonymousSession();
+    promise.then(
+      function (response) {
+        console.log(response);
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+    setLoading(false);
+  };
+
   const logout = async () => {
     await account.deleteSession("current");
     setUser(null);
