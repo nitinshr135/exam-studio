@@ -22,7 +22,7 @@ const MultipleChoiceQuestion = ({
       <p>
         {sequence}. {questionText}
       </p>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {choices.map((choice, i) => (
           <ChoiceButton key={i} choice={choice} />
         ))}

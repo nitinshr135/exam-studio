@@ -1,15 +1,13 @@
 "use client";
 
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface IChoiceButton {
   choice: string;
+  onClick: any;
 }
 
-const ChoiceButton = ({ choice }: IChoiceButton) => {
-  const { push } = useRouter();
-
+const LoginButton = ({ choice, onClick }: IChoiceButton) => {
   const [effect, setEffect] = useState(false);
   const [selected, setSelected] = useState(false);
   return (
@@ -22,7 +20,7 @@ const ChoiceButton = ({ choice }: IChoiceButton) => {
       onClick={() => {
         setEffect(true);
         setSelected(!selected);
-        push("/exam-hall");
+        onClick();
       }}
       onAnimationEnd={() => setEffect(false)}
     >
@@ -31,4 +29,4 @@ const ChoiceButton = ({ choice }: IChoiceButton) => {
   );
 };
 
-export default ChoiceButton;
+export default LoginButton;

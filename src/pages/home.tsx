@@ -1,29 +1,51 @@
-import Image from "next/image";
+import { account } from "@/appwrite/appwriteConfig";
+import LoginButton from "@/components/login-button";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const { push } = useRouter();
+
+  const anonymousSignup = async () => {
+    const promise = account.createAnonymousSession();
+
+    promise.then(
+      function (response) {
+        console.log(response);
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between py-32 lg:py-24 px-6 lg:px-12 bg-[#6096B4]">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Nitin Sharma
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div
+          className="backdrop-blur-2xl fixed left-0 top-0 w-full py-6 px-6 lg:px-12 border-b border-gray-300
+          flex justify-between flex-col lg:flex-row gap-6"
+        >
+          <p className="">Welcome User</p>
+          <p className="">Nitin Sharma</p>
+        </div>
+
+        <div className="flex flex-col items-center justify-center w-full h-full gap-10">
+          Good Afternoon Amigos!
+          <LoginButton
+            choice={"Continue with Login ->"}
+            onClick={() => push("/login")}
+          />
+          <LoginButton
+            choice={"Continue as a Guest ->"}
+            onClick={() => anonymousSignup()}
+          />
+          <Link
+            href={"/signup"}
+            className="flex flex-row gap-1 hover:underline cursor-pointer"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Already a member? <p className="font-medium">Signup</p>
+          </Link>
         </div>
       </div>
     </main>
