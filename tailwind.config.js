@@ -14,7 +14,7 @@ module.exports = {
       },
       keyframes: {
         click: {
-          "0%": { transform: "scale(0.90)" },
+          "0%": { transform: "scale(0.95)" },
           "100%": { transform: "scale(1)" },
         },
         wiggle: {
@@ -24,7 +24,7 @@ module.exports = {
       },
       animation: {
         wiggle: "wiggle 200ms ease-in-out",
-        click: "click 200ms ease-out",
+        click: "click 200ms ease-in-out",
       },
     },
   },

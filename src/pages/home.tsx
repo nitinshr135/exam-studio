@@ -1,10 +1,8 @@
-import { databases } from "@/appwrite/appwriteConfig";
-import Navbar from "@/components/navbar";
-import { UseUser } from "@/hooks/UserContext";
+import Navbar from "@/components/navbars/navbar";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import RightIcon from "@/assets/icons/right-arrow.svg";
 import Image from "next/image";
+import { UsePaper } from "@/hooks/PaperContext";
 
 interface IQuestionPaper {
   examName: string;
@@ -13,40 +11,14 @@ interface IQuestionPaper {
 
 export default function Home() {
   const { push } = useRouter();
-  const { user } = UseUser();
-
-  const [questionPapers, setQuestionPapers] = useState<IQuestionPaper[]>([
-    { examName: "UPSC CSE Prelims 2023", collectionId: "647ccce5b97c65e7f561" },
-    { examName: "UPSC CDS 2023", collectionId: "647ccce5b97d76e7f561" },
-  ]);
-
-  const listQuestions = async () => {
-    let promise = databases.listDocuments(
-      "647cccd637b162c557f3",
-      "647cf33675d0d6a5c6e5"
-      // [Query.equal("title", "Avatar")]
-    );
-
-    promise.then(
-      function (response) {
-        console.log(response);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
-  };
-
-  useEffect(() => {
-    listQuestions();
-  }, []);
+  const { examinationPapers } = UsePaper();
 
   return (
     <>
       <Navbar />
       <div className="flex flex-col text-left w-full h-full gap-12 mt-10">
         <h1 className="font-bold text-xl mb-2">Global Tests</h1>
-        {questionPapers.map((paper, i) => (
+        {examinationPapers?.map((paper, i) => (
           <div
             key={i}
             className="bg-white w-2/3 h-12 rounded-3xl
@@ -57,7 +29,7 @@ export default function Home() {
             onClick={() => push(`/exam-hall/${paper.collectionId}`)}
           >
             <h1 className="text-lg font-medium">
-              {i + 1}. {paper.examName}
+              {i + 1}. {paper.name}
             </h1>
             <Image src={RightIcon} width={18} height={10} alt="visit" />
           </div>

@@ -1,11 +1,11 @@
-import LoginButton from "@/components/login-button";
+import LoginButton from "@/components/buttons/login-button";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { account } from "@/appwrite/appwriteConfig";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
-import NavbarWithLogin from "@/components/navbar-login";
-import InputText from "@/components/input-text";
+import NavbarWithLogin from "@/components/navbars/navbar-login";
+import InputText from "@/components/input/input-text";
 import { UseUser } from "@/hooks/UserContext";
 
 export default function Signup() {
