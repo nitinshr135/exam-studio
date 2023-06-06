@@ -14,9 +14,7 @@ const Navbar = () => {
           flex justify-between flex-col lg:flex-row gap-6"
     >
       <div className="flex flex-row gap-3 items-center">
-        <p className="font-semibold text-lg font-sans">
-          Welcome {loadUserName()}
-        </p>
+        <p className="font-semibold text-lg">Hi {loadUserName()}</p>
       </div>
       <button
         className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white font-medium hover:opacity-90 ease-in-out"

@@ -1,4 +1,5 @@
 import { databases } from "@/appwrite/appwriteConfig";
+import Instructions from "@/components/instructions";
 import MultipleChoiceQuestion from "@/components/multiple-choice-question";
 import NavbarExam from "@/components/navbars/navbar-exam";
 import { useRouter } from "next/router";
@@ -6,6 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function ExamHall() {
   const { query } = useRouter();
+  console.log("YEE query", query);
   const [questions, setQuestions] = useState<any>(); // Question set for the examination
   const [totalMarks, setTotalMarks] = useState<number>(0); // Total marks obtained
   console.log("YEE TOTAL MARKS --", totalMarks);
@@ -50,33 +52,37 @@ export default function ExamHall() {
   return (
     <>
       <NavbarExam />
-      <div className="flex flex-col gap-10 w-full">
-        <div className="flex flex-col gap-10">
-          {questions?.map((question: any, i: number) => (
-            <MultipleChoiceQuestion
-              key={i}
-              sequence={++i}
-              questionText={question.ques}
-              choices={question.options}
-              isMultiSelect={question.isMultiChoice}
-              answer={question.answer}
-              positiveMark={question.mark}
-              negativeMark={question.negativeMark}
-              markObtained={handleMarksObtained}
-            />
-          ))}
-        </div>
+      {(query.start as string) === "false" ? (
+        <Instructions />
+      ) : (
+        <div className="flex flex-col gap-10 w-full">
+          <div className="flex flex-col gap-10">
+            {questions?.map((question: any, i: number) => (
+              <MultipleChoiceQuestion
+                key={i}
+                sequence={++i}
+                questionText={question.ques}
+                choices={question.options}
+                isMultiSelect={question.isMultiChoice}
+                answer={question.answer}
+                positiveMark={question.mark}
+                negativeMark={question.negativeMark}
+                markObtained={handleMarksObtained}
+              />
+            ))}
+          </div>
 
-        <div className="mt-12 w-full flex items-center justify-center">
-          <button
-            className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white
+          <div className="mt-12 w-full flex items-center justify-center">
+            <button
+              className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white
           font-medium hover:opacity-90 ease-in-out"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

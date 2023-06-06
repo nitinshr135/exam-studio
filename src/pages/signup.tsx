@@ -13,7 +13,7 @@ export default function Signup() {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { signup } = UseUser();
+  const { signup, loading } = UseUser();
 
   const handleSignup = async () => {
     signup(email, password, username);
@@ -24,7 +24,7 @@ export default function Signup() {
       <NavbarWithLogin />
 
       <div className="flex flex-col items-center justify-center w-full h-full gap-10">
-        Signup
+        <h1 className="font-bold text-6xl">Signup</h1>
         <InputText
           text={username}
           setText={setUsername}
@@ -40,12 +40,16 @@ export default function Signup() {
           setText={setPassword}
           placeholder="Password"
         />
-        <LoginButton choice={"Signup"} onClick={handleSignup} />
+        <LoginButton
+          choice={"Signup"}
+          loading={loading}
+          onClick={handleSignup}
+        />
         <Link
           href={"/login"}
-          className="flex flex-row gap-1 hover:underline cursor-pointer"
+          className="flex flex-row gap-1 hover:underline cursor-pointer font-medium"
         >
-          Already a member? <p className="font-medium">Login</p>
+          Already a member? <p className="font-semibold">Login</p>
         </Link>
       </div>
     </>

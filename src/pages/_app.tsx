@@ -2,6 +2,13 @@ import { UserProvider } from "@/hooks/UserContext";
 import "../app/globals.css";
 import Head from "next/head";
 import { PaperProvider } from "@/hooks/PaperContext";
+import { Questrial } from "next/font/google";
+
+// If loading a variable font, you don't need to specify the font weight
+const questrial = Questrial({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: any) {
@@ -44,10 +51,10 @@ export default function MyApp({ Component, pageProps }: any) {
           <meta name="twitter:url" content={process.env.NEXT_PUBLIC_APP_URL} />
         </Head>
 
-        <main className="flex min-h-screen flex-col py-32 lg:py-24 px-6 lg:px-12">
-          <div className="z-10 w-full font-sans lg:flex">
-            <Component {...pageProps} />
-          </div>
+        <main
+          className={`flex min-h-screen py-32 lg:py-24 px-6 lg:px-12 ${questrial.className}`}
+        >
+          <Component {...pageProps} />
         </main>
       </PaperProvider>
     </UserProvider>

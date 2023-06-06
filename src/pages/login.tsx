@@ -13,7 +13,8 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { user, login } = UseUser();
+  const { user, loading, login } = UseUser();
+  console.log("YEE LOADING ", loading);
 
   console.log("USER --", user);
 
@@ -29,7 +30,7 @@ export default function Login() {
     <>
       <NavbarWithLogin />
       <div className="flex flex-col items-center justify-center w-full h-full gap-10">
-        Login
+        <h1 className="font-bold text-6xl">Login</h1>
         <InputText
           text={email}
           setText={setEmail}
@@ -40,12 +41,16 @@ export default function Login() {
           setText={setPassword}
           placeholder="Password"
         />
-        <LoginButton choice={"Login"} onClick={() => handleLogin()} />
+        <LoginButton
+          choice={"Login"}
+          loading={loading}
+          onClick={() => handleLogin()}
+        />
         <Link
           href={"/signup"}
-          className="flex flex-row gap-1 hover:underline cursor-pointer"
+          className="flex flex-row gap-1 hover:underline cursor-pointer font-medium"
         >
-          Don&apos;t have an account? <p className="font-medium">Signup</p>
+          Don&apos;t have an account? <p className="font-semibold">Signup</p>
         </Link>
       </div>
     </>

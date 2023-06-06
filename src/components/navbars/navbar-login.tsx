@@ -12,7 +12,8 @@ const NavbarWithLogin = () => {
       <h1 className="font-semibold text-base lg:text-xl">Exam Studio</h1>
       <p className="">
         <button
-          className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white font-medium hover:opacity-90 ease-in-out"
+          className="px-10 bg-white border border-black h-9 rounded-full shadow-sm
+          font-medium ease-in-out hover:text-white hover:bg-black"
           onClick={() => {
             pathname === "/signup" ? push("/login") : push("/signup");
           }}
