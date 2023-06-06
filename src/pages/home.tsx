@@ -1,17 +1,12 @@
-import Navbar from "@/components/navbars/navbar";
+import Navbar from "@/components/Navbar/navbar";
 import { useRouter } from "next/router";
 import RightIcon from "@/assets/icons/right-arrow.svg";
 import Image from "next/image";
-import { UsePaper } from "@/hooks/PaperContext";
-
-interface IQuestionPaper {
-  examName: string;
-  collectionId: string;
-}
+import { UsePaper } from "@/hooks/paper-context";
 
 export default function Home() {
   const { push } = useRouter();
-  const { examinationPapers } = UsePaper();
+  const { examinationPapers, setSelectedExam } = UsePaper();
 
   return (
     <>
@@ -21,12 +16,15 @@ export default function Home() {
         {examinationPapers?.map((paper, i) => (
           <div
             key={i}
-            className="bg-white w-2/3 h-12 rounded-3xl
+            className="bg-white w-full sm:w-2/3 h-12 rounded-3xl
             flex justify-between items-center px-8 gap-5
             cursor-pointer shadow-sm ease-in-out duration-150
             hover:shadow-2xl hover:-translate-y-2 hover:translate-x-2
-            hover:bg-slate-100"
-            onClick={() => push(`/exam-hall/${paper.collectionId}?start=false`)}
+            hover:bg-slate-100 border border-gray-600"
+            onClick={() => {
+              push(`/exam-hall/${paper.collectionId}?start=false`);
+              setSelectedExam(paper);
+            }}
           >
             <h1 className="text-lg font-medium">
               {i + 1}. {paper.name}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ChoiceButton from "./buttons/choice-button";
+import ChoiceButton from "./Button/choice-button";
 
 interface IMultipleChoiceQuestion {
   sequence: number;
@@ -25,9 +25,6 @@ const MultipleChoiceQuestion = ({
   markObtained,
 }: IMultipleChoiceQuestion) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string[] | null>(null);
-
-  console.log("YEE SELECTED ANSWER", selectedAnswer);
-
   const handleAddAnswer = (newString: string) => {
     if (!isMultiSelect) setSelectedAnswer([newString]);
     else {

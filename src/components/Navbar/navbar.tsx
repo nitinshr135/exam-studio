@@ -1,6 +1,6 @@
 "use client";
 
-import { UseUser } from "@/hooks/UserContext";
+import { UseUser } from "@/hooks/user-context";
 
 const Navbar = () => {
   const { user, logout } = UseUser();

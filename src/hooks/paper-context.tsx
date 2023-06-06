@@ -10,16 +10,19 @@ import React, {
 
 export interface IExaminationState {
   examinationPapers: { name: string; collectionId: string }[] | null;
-  selectedExaminationPaper: string;
+  selectedExam: any;
   loading: boolean;
   error: string | null;
+  setSelectedExam: (exam: any) => void;
 }
 
 const defaultState: IExaminationState = {
   examinationPapers: null,
-  selectedExaminationPaper: "",
+  selectedExam: null,
   loading: false,
   error: null,
+
+  setSelectedExam: () => {},
 };
 
 const PaperContext = createContext<IExaminationState>(defaultState);
@@ -34,12 +37,14 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
       }[]
     | null
   >(null);
-  const [selectedExaminationPaper, setSelectedExaminationPaper] =
-    useState<string>("");
+
+  const [selectedExam, setSelectedExam] = useState<any>();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState("");
 
   const loadExaminationPapers = async () => {
+    setLoading(true);
     let promise = databases.listDocuments(
       "647cccd637b162c557f3",
       "647cf4bf200f3913bdfc"
@@ -55,29 +60,30 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
               collectionId: document.collectionId,
             }))
           );
+
+        setLoading(false);
         console.log(response);
       },
       function (error) {
+        setLoading(false);
         console.log(error);
       }
     );
   };
 
-  console.log("YEE examinationPapers", examinationPapers);
-
   useEffect(() => {
     loadExaminationPapers();
   }, []);
 
-  useEffect(() => {
-    if (!!query.slug) {
-      setSelectedExaminationPaper(query.slug as string);
-    }
-  }, [query.slug]);
-
   return (
     <PaperContext.Provider
-      value={{ examinationPapers, selectedExaminationPaper, loading, error }}
+      value={{
+        examinationPapers,
+        selectedExam,
+        setSelectedExam,
+        loading,
+        error,
+      }}
     >
       {children}
     </PaperContext.Provider>

@@ -1,12 +1,12 @@
-import LoginButton from "@/components/buttons/login-button";
+import LoginButton from "@/components/Button/login-button";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { account } from "@/appwrite/appwriteConfig";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
-import { UseUser } from "@/hooks/UserContext";
-import NavbarWithLogin from "@/components/navbars/navbar-login";
-import InputText from "@/components/input/input-text";
+import NavbarWithLogin from "@/components/Navbar/navbar-login";
+import InputText from "@/components/Input/input-text";
+import { UseUser } from "@/hooks/user-context";
 
 export default function Login() {
   const { push } = useRouter();
@@ -14,7 +14,6 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
 
   const { user, loading, login } = UseUser();
-  console.log("YEE LOADING ", loading);
 
   console.log("USER --", user);
 
