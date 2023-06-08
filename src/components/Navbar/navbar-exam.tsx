@@ -3,6 +3,7 @@
 import { UseModal } from "@/hooks/modal-context";
 import { UsePaper } from "@/hooks/paper-context";
 import { UseTimer } from "@/hooks/timer-context";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 interface INavbarExam {
@@ -13,6 +14,8 @@ interface INavbarExam {
 const NavbarExam = ({ attemptedNo, unattemptedNo }: INavbarExam) => {
   const { selectedExam } = UsePaper();
   const { setModalOpen, setModalType, setModalOption } = UseModal();
+
+  const { query } = useRouter();
 
   const { timerDurationInSecs, startTimer } = UseTimer();
 
@@ -28,7 +31,7 @@ const NavbarExam = ({ attemptedNo, unattemptedNo }: INavbarExam) => {
           flex justify-between items-center flex-col lg:flex-row gap-6 z-20"
     >
       <p className="font-semibold">{!!selectedExam ? selectedExam.name : ""}</p>
-      {startTimer && (
+      {startTimer && query.start === "true" && (
         <p className="font-medium text-sm">
           Time Remaining:
           {timerDurationInSecs < 10

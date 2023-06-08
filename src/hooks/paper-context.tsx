@@ -7,28 +7,36 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { UseUser } from "./user-context";
+import { Query } from "appwrite";
 
 export interface IExaminationState {
   examinationPapers: { name: string; collectionId: string }[] | null;
   selectedExam: any;
   loading: boolean;
-  error: string | null;
+  examHistory: any;
+  selectedExamHistory: any;
   setSelectedExam: (exam: any) => void;
+  error: string | null;
+  setSelectedExamHistory: (exam: any) => void;
 }
 
 const defaultState: IExaminationState = {
   examinationPapers: null,
   selectedExam: null,
+  examHistory: null,
+  selectedExamHistory: null,
   loading: false,
   error: null,
 
   setSelectedExam: () => {},
+  setSelectedExamHistory: () => {},
 };
 
 const PaperContext = createContext<IExaminationState>(defaultState);
 
 export const PaperProvider = ({ children }: { children: ReactNode }) => {
-  const { query } = useRouter();
+  const { user } = UseUser();
 
   const [examinationPapers, setExaminationPapers] = useState<
     | {
@@ -42,6 +50,8 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState("");
+  const [examHistory, setExamHistory] = useState<any>();
+  const [selectedExamHistory, setSelectedExamHistory] = useState<any>();
 
   const loadExaminationPapers = async () => {
     setLoading(true);
@@ -71,9 +81,44 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  const userExamHistory = async () => {
+    let promise = databases.listDocuments(
+      "647cccd637b162c557f3",
+      "6480edbcf330b7e4ad83",
+      [Query.equal("userId", user?.$id)]
+    );
+
+    promise.then(
+      function (response) {
+        if (!!response) {
+          setExamHistory(
+            (response as any).documents.map((document: any) => ({
+              resultId: document.$id,
+              examId: document.examId,
+              userId: document.userId,
+              marksObtained: document.marksObtained,
+              attempted: document.attempted,
+              unattempted: document.unattempted,
+            }))
+          );
+        }
+        console.log(response);
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+  };
+
   useEffect(() => {
     loadExaminationPapers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!!user) userExamHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <PaperContext.Provider
@@ -81,6 +126,9 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
         examinationPapers,
         selectedExam,
         setSelectedExam,
+        examHistory,
+        selectedExamHistory,
+        setSelectedExamHistory,
         loading,
         error,
       }}

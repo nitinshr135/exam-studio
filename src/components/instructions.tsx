@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
 
-const Instructions = () => {
+interface IInstructionProps {
+  isDisabled: boolean;
+}
+
+const Instructions = ({ isDisabled }: IInstructionProps) => {
   const { query, push } = useRouter();
   return (
     <div className="flex flex-col items-center justify-center w-full h-full mt-24">
@@ -31,8 +35,10 @@ const Instructions = () => {
       <p className="font-bold text-2xl">Good luck with your exam!</p>
       <button
         className="mt-8 px-8 h-9 bg-[#0D99FF] rounded-3xl shadow-sm
-            text-white font-medium hover:opacity-90 ease-in-out"
-        onClick={() => push(`/exam-hall/${query.slug}?start=true`)}
+            text-white font-medium hover:opacity-90 ease-in-out
+              disabled:opacity-80 disabled:cursor-not-allowed"
+        onClick={() => push(`/exam-hall/${query.examId}?start=true`)}
+        disabled={isDisabled}
       >
         Start Exam
       </button>

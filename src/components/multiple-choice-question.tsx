@@ -11,7 +11,7 @@ interface IMultipleChoiceQuestion {
   answer: string[];
   positiveMark: number;
   negativeMark: number;
-  markObtained: (i: number, mark: number) => void;
+  markObtained: (i: number, mark: number, attempted: boolean) => void;
 }
 
 const MultipleChoiceQuestion = ({
@@ -46,9 +46,9 @@ const MultipleChoiceQuestion = ({
   useEffect(() => {
     if (!!selectedAnswer?.length)
       JSON.stringify(selectedAnswer?.sort()) === JSON.stringify(answer?.sort())
-        ? markObtained(sequence, positiveMark)
-        : markObtained(sequence, -negativeMark);
-    else markObtained(sequence, 0);
+        ? markObtained(sequence, positiveMark, !!selectedAnswer)
+        : markObtained(sequence, -negativeMark, !!selectedAnswer);
+    else markObtained(sequence, 0, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAnswer]);
 

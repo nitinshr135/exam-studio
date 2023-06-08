@@ -16,6 +16,10 @@ export default function Login() {
   const { user, loading, login } = UseUser();
 
   console.log("USER --", user);
+  console.log(
+    "YEE PROCESS ENV --",
+    process.env.APPWRITE_EXAMINATION_DATABASE_ID
+  );
 
   const handleLogin = async () => {
     login(email, password);
