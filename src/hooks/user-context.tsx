@@ -99,6 +99,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     loadAccount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

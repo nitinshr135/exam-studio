@@ -132,6 +132,7 @@ export default function ExamHall() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("keydown", handleRefresh);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

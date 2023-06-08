@@ -61,7 +61,7 @@ const Result = () => {
           <div className="text-left font-medium">
             Submitted at :
             <p>
-              {new Date(result.$createdAt).toLocaleDateString("en-us", {
+              {new Date(result?.$createdAt).toLocaleDateString("en-us", {
                 hour: "2-digit",
                 minute: "2-digit",
                 year: "numeric",
@@ -80,7 +80,7 @@ const Result = () => {
             <div className="text-3xl font-semibold">
               Total Questions:{" "}
               <h1 className="text-4xl text-green-500">
-                {result.attempted + result.unattempted}
+                {result?.attempted + result?.unattempted}
               </h1>
             </div>
           </div>
@@ -91,11 +91,11 @@ const Result = () => {
           >
             <h2 className="text-3xl font-semibold">
               Attempted:{" "}
-              <h1 className="text-4xl text-green-500">{result.attempted}</h1>
+              <h1 className="text-4xl text-green-500">{result?.attempted}</h1>
             </h2>
             <h2 className="text-3xl font-semibold">
               Unattempted:{" "}
-              <h1 className="text-4xl text-red-500">{result.unattempted}</h1>
+              <h1 className="text-4xl text-red-500">{result?.unattempted}</h1>
             </h2>
           </div>
           <div
@@ -106,11 +106,11 @@ const Result = () => {
             <h2 className="text-3xl font-semibold">
               Marks Obtained:{" "}
               <h1 className="text-4xl text-green-500">
-                {result.marksObtained}
+                {result?.marksObtained}
               </h1>
             </h2>
             <h2 className="text-3xl font-semibold">
-              Total Marks: <h1 className="text-4xl">{result.totalMarks}</h1>
+              Total Marks: <h1 className="text-4xl">{result?.totalMarks}</h1>
             </h2>
           </div>
         </div>
@@ -121,8 +121,8 @@ const Result = () => {
             flex justify-center items-center"
           >
             <CircularPercentageWheel
-              totalMarks={result.totalMarks}
-              correctMarks={result.marksObtained}
+              totalMarks={result?.totalMarks}
+              correctMarks={result?.marksObtained}
             />
           </div>
         </div>
