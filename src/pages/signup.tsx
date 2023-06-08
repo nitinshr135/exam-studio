@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import NavbarWithLogin from "@/components/Navbar/navbar-login";
 import { UseUser } from "@/hooks/user-context";
-import InputText from "@/components/Input/input-text";
+import InputText from "@/components/InputField/input-text";
 
 export default function Signup() {
   const { push } = useRouter();
