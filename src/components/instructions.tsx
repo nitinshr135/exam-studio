@@ -40,7 +40,7 @@ const Instructions = ({ isDisabled }: IInstructionProps) => {
         onClick={() => push(`/exam-hall/${query.examId}?start=true`)}
         disabled={isDisabled}
       >
-        Start Exam
+        {isDisabled ? "Loading Exam" : "Start Exam"}
       </button>
     </div>
   );

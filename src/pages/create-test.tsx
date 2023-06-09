@@ -7,7 +7,7 @@ import { databases } from "@/appwrite/appwriteConfig";
 import { useEffect, useState } from "react";
 import { Query } from "appwrite";
 
-const Result = () => {
+const CreateTest = () => {
   const { query, push } = useRouter();
   console.log("YEE QUERY --", query, query.resultId as string);
 
@@ -47,7 +47,7 @@ const Result = () => {
           >
             <Image
               src={RightIcon}
-              className="transform rotate-180 z-10"
+              className="transform rotate-180 -z-10"
               width={14}
               height={10}
               alt="visit"
@@ -57,7 +57,7 @@ const Result = () => {
           <h1 className="text-5xl font-bold text-center">Result</h1>
           <div className="text-left font-semibold">
             Submitted at :
-            <div>
+            <p>
               {new Date(result?.$createdAt).toLocaleDateString("en-us", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -65,13 +65,13 @@ const Result = () => {
                 month: "short",
                 day: "numeric",
               })}
-            </div>
+            </p>
           </div>
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-16 items-center justify-center">
           <div
             className="h-60 w-60 shadow-xl hover:shadow2xl rounded-lg
-            hover:-translate-y-2 duration-100 bg-white
+            hover:-translate-y-2 duration-100
             text-left flex items-center p-6"
           >
             <div className="text-3xl font-semibold">
@@ -83,32 +83,32 @@ const Result = () => {
           </div>
           <div
             className="h-60 w-60 shadow-xl hover:shadow2xl rounded-lg
-            hover:-translate-y-2 duration-100  bg-white
+            hover:-translate-y-2 duration-100
             text-left flex flex-col gap-4 p-6"
           >
-            <div className="text-3xl font-semibold">
+            <h2 className="text-3xl font-semibold">
               Attempted:{" "}
               <h1 className="text-4xl text-green-500">{result?.attempted}</h1>
-            </div>
-            <div className="text-3xl font-semibold">
+            </h2>
+            <h2 className="text-3xl font-semibold">
               Unattempted:{" "}
               <h1 className="text-4xl text-red-500">{result?.unattempted}</h1>
-            </div>
+            </h2>
           </div>
           <div
             className="h-60 w-60 shadow-xl hover:shadow2xl rounded-lg
             hover:-translate-y-2 duration-100
             text-left flex flex-col gap-4 p-6"
           >
-            <div className="text-3xl font-semibold">
+            <h2 className="text-3xl font-semibold">
               Marks Obtained:{" "}
               <h1 className="text-4xl text-green-500">
                 {result?.marksObtained}
               </h1>
-            </div>
-            <div className="text-3xl font-semibold">
+            </h2>
+            <h2 className="text-3xl font-semibold">
               Total Marks: <h1 className="text-4xl">{result?.totalMarks}</h1>
-            </div>
+            </h2>
           </div>
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-16 items-center justify-center">
@@ -129,4 +129,4 @@ const Result = () => {
   );
 };
 
-export default Result;
+export default CreateTest;

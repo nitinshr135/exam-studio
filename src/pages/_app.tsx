@@ -54,7 +54,8 @@ export default function MyApp({ Component, pageProps }: any) {
           <UserProvider>
             <PaperProvider>
               <main
-                className={`flex min-h-screen py-32 lg:py-24 px-6 lg:px-12 ${questrial.className}`}
+                className={`flex min-h-screen py-32 lg:py-24 px-6 lg:px-12 ${questrial.className}
+                bg-gradient-to-b from-indigo-900 via-indigo-400 to-indigo-900`}
               >
                 <Modals />
                 <Component {...pageProps} />

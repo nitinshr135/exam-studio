@@ -67,7 +67,7 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
           setExaminationPapers(
             (response as any).documents.map((document: any) => ({
               name: document.examName,
-              collectionId: document.collectionId,
+              collectionId: document.$id,
             }))
           );
 
@@ -99,6 +99,8 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
               marksObtained: document.marksObtained,
               attempted: document.attempted,
               unattempted: document.unattempted,
+              sumbittedAt: document.$createdAt,
+              totalMarks: document.totalMarks,
             }))
           );
         }

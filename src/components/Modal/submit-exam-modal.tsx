@@ -1,14 +1,51 @@
 import React, { useContext } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { UseModal } from "@/hooks/modal-context";
-import LoginButton from "../Button/login-button";
 import { UseTimer } from "@/hooks/timer-context";
+import { databases } from "@/appwrite/appwriteConfig";
+import { UsePaper } from "@/hooks/paper-context";
+import { UseUser } from "@/hooks/user-context";
+import { useRouter } from "next/router";
 
 const SubmitExamModal = () => {
   const { setModalOpen, modalOption } = UseModal();
   const { timerDurationInSecs, startTimer } = UseTimer();
+  const { selectedExam } = UsePaper();
+  const { user } = UseUser();
+  const { query, push } = useRouter();
 
   const handleClose = (e: any) => {
     if (e.target.classList.contains("modal")) {
+      setModalOpen(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!!user) {
+      const promise = databases.createDocument(
+        "647cccd637b162c557f3",
+        "6480edbcf330b7e4ad83",
+        uuidv4(),
+        {
+          examId: query.examId,
+          userId: user.$id,
+          marksObtained: 83.4,
+          attempted: 26,
+          unattempted: 24,
+          totalMarks: 100,
+        }
+      );
+
+      promise.then(
+        function (response) {
+          console.log(response);
+          push(`/exam-hall/${query.examId}/result/${response.$id}`);
+        },
+        function (error) {
+          console.log(error);
+        }
+      );
+
       setModalOpen(false);
     }
   };
@@ -53,7 +90,7 @@ const SubmitExamModal = () => {
           <button
             className="px-10 bg-red-500 h-9 rounded-3xl shadow-sm text-white
           font-medium hover:opacity-90 ease-in-out w-max"
-            onClick={() => null}
+            onClick={handleSubmit}
           >
             Yes, End Exam
           </button>

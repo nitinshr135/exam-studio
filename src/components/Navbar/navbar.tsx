@@ -11,10 +11,10 @@ const Navbar = () => {
   return (
     <div
       className="backdrop-blur-2xl fixed left-0 top-0 w-full py-6 px-6 lg:px-12 border-b border-white-
-          flex justify-between flex-col lg:flex-row gap-6"
+          flex justify-between flex-col lg:flex-row gap-6 z-40 bg-indigo-900"
     >
       <div className="flex flex-row gap-3 items-center">
-        <div className="font-semibold text-lg text-center">
+        <div className="font-semibold text-lg text-center text-white">
           Hi {loadUserName()}{" "}
           <span role="img" aria-label="Waving Hand">
             &#x1F44B;

@@ -6,16 +6,13 @@ import MultipleChoiceQuestion from "@/components/multiple-choice-question";
 import NavbarExam from "@/components/Navbar/navbar-exam";
 import { UseModal } from "@/hooks/modal-context";
 import { UseTimer } from "@/hooks/timer-context";
-import { v4 as uuidv4 } from "uuid";
 import { UseUser } from "@/hooks/user-context";
 import { UsePaper } from "@/hooks/paper-context";
 
 export default function ExamHall() {
-  const { query, push } = useRouter();
+  const { query } = useRouter();
   const { setStartTimer, setTimerDurationInSecs } = UseTimer();
   const { setModalOpen, setModalType, setModalOption } = UseModal();
-  const { selectedExam } = UsePaper();
-  const { user } = UseUser();
 
   const [questions, setQuestions] = useState<any>(); // Question set for the examination
 
@@ -38,34 +35,6 @@ export default function ExamHall() {
         console.log(error);
       }
     );
-  };
-
-  const handleSubmit = async () => {
-    if (!!user) {
-      const promise = databases.createDocument(
-        "647cccd637b162c557f3",
-        "6480edbcf330b7e4ad83",
-        uuidv4(),
-        {
-          examId: query.examId,
-          userId: user.$id,
-          marksObtained: 83.4,
-          attempted: 26,
-          unattempted: 24,
-          totalMarks: 100,
-        }
-      );
-
-      promise.then(
-        function (response) {
-          console.log(response);
-          push(`/exam-hall/${query.examId}/result`);
-        },
-        function (error) {
-          console.log(error);
-        }
-      );
-    }
   };
 
   useEffect(() => {
@@ -165,7 +134,11 @@ export default function ExamHall() {
             <button
               className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white
           font-medium hover:opacity-90 ease-in-out"
-              onClick={handleSubmit}
+              onClick={() => {
+                setModalType("submitExam");
+                setModalOption({ attemptedNo: 78, unattemptedNo: 22 });
+                setModalOpen(true);
+              }}
             >
               Submit
             </button>
