@@ -1,6 +1,6 @@
 import LoginButton from "@/components/Button/login-button";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavbarWithLogin from "@/components/Navbar/navbar-login";
 import { UseUser } from "@/hooks/user-context";
@@ -12,12 +12,6 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
 
   const { user, loading, login } = UseUser();
-
-  console.log("USER --", user);
-  console.log(
-    "YEE PROCESS ENV --",
-    process.env.APPWRITE_EXAMINATION_DATABASE_ID
-  );
 
   const handleLogin = async () => {
     login(email, password);
@@ -38,6 +32,7 @@ export default function Login() {
           placeholder="Email Address"
         />
         <InputText
+          type="password"
           text={password}
           setText={setPassword}
           placeholder="Password"

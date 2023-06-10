@@ -6,18 +6,17 @@ import RightIcon from "@/assets/icons/right-arrow.svg";
 import { databases } from "@/appwrite/appwriteConfig";
 import { useEffect, useState } from "react";
 import { Query } from "appwrite";
+import config from "@/config";
 
 const CreateTest = () => {
   const { query, push } = useRouter();
-  console.log("YEE QUERY --", query, query.resultId as string);
 
   const [result, setResult] = useState<any>();
-  console.log("YEE RESULT --", result);
 
   const loadResult = async () => {
     let promise = databases.listDocuments(
-      "647cccd637b162c557f3",
-      "6480edbcf330b7e4ad83",
+      config.appwrite.PROJECT_ID,
+      config.appwrite.USER_EXAM_HISTORY,
       [Query.equal("$id", query.resultId as string)]
     );
 

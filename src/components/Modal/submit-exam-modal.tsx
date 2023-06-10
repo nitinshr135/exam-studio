@@ -3,14 +3,13 @@ import { v4 as uuidv4 } from "uuid";
 import { UseModal } from "@/hooks/modal-context";
 import { UseTimer } from "@/hooks/timer-context";
 import { databases } from "@/appwrite/appwriteConfig";
-import { UsePaper } from "@/hooks/paper-context";
 import { UseUser } from "@/hooks/user-context";
 import { useRouter } from "next/router";
+import config from "@/config";
 
 const SubmitExamModal = () => {
   const { setModalOpen, modalOption } = UseModal();
   const { timerDurationInSecs, startTimer } = UseTimer();
-  const { selectedExam } = UsePaper();
   const { user } = UseUser();
   const { query, push } = useRouter();
 
@@ -23,8 +22,8 @@ const SubmitExamModal = () => {
   const handleSubmit = async () => {
     if (!!user) {
       const promise = databases.createDocument(
-        "647cccd637b162c557f3",
-        "6480edbcf330b7e4ad83",
+        config.appwrite.PROJECT_ID,
+        config.appwrite.USER_EXAM_HISTORY,
         uuidv4(),
         {
           examId: query.examId,

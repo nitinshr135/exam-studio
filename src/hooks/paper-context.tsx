@@ -1,5 +1,4 @@
 import { databases } from "@/appwrite/appwriteConfig";
-import { useRouter } from "next/router";
 import React, {
   ReactNode,
   createContext,
@@ -9,9 +8,12 @@ import React, {
 } from "react";
 import { UseUser } from "./user-context";
 import { Query } from "appwrite";
+import config from "@/config";
 
 export interface IExaminationState {
-  examinationPapers: { name: string; collectionId: string }[] | null;
+  examinationPapers:
+    | { name: string; collectionId: string; createdBy: string }[]
+    | null;
   selectedExam: any;
   loading: boolean;
   examHistory: any;
@@ -42,6 +44,7 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
     | {
         name: string;
         collectionId: string;
+        createdBy: string;
       }[]
     | null
   >(null);
@@ -56,9 +59,8 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
   const loadExaminationPapers = async () => {
     setLoading(true);
     let promise = databases.listDocuments(
-      "647cccd637b162c557f3",
-      "647cf4bf200f3913bdfc"
-      // [Query.equal("title", "Avatar")]
+      config.appwrite.PROJECT_ID,
+      config.appwrite.QUESTION_PAPERS_ID
     );
 
     promise.then(
@@ -68,6 +70,7 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
             (response as any).documents.map((document: any) => ({
               name: document.examName,
               collectionId: document.$id,
+              createdBy: document.createdBy,
             }))
           );
 
@@ -80,11 +83,14 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
       }
     );
   };
-
+  console.log(
+    "yee process.env.APPWRITE_PROJECT_ID,",
+    config.appwrite.PROJECT_ID
+  );
   const userExamHistory = async () => {
     let promise = databases.listDocuments(
-      "647cccd637b162c557f3",
-      "6480edbcf330b7e4ad83",
+      config.appwrite.PROJECT_ID,
+      config.appwrite.USER_EXAM_HISTORY,
       [Query.equal("userId", user?.$id)]
     );
 

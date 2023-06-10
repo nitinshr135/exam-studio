@@ -8,6 +8,8 @@ import { UseModal } from "@/hooks/modal-context";
 import { UseTimer } from "@/hooks/timer-context";
 import { UseUser } from "@/hooks/user-context";
 import { UsePaper } from "@/hooks/paper-context";
+import { Query } from "appwrite";
+import config from "@/config";
 
 export default function ExamHall() {
   const { query } = useRouter();
@@ -25,7 +27,11 @@ export default function ExamHall() {
 
   // Load the examination questions once we are in the examination page
   const loadExaminationQuestions = async (collectionId: string) => {
-    let promise = databases.listDocuments("647cccd637b162c557f3", collectionId);
+    let promise = databases.listDocuments(
+      config.appwrite.PROJECT_ID,
+      config.appwrite.QUESTION_BANK_ID,
+      [Query.equal("examID", collectionId)]
+    );
 
     promise.then(
       function (response) {
@@ -46,7 +52,6 @@ export default function ExamHall() {
     let count = 0;
 
     for (const [key, value] of hashmap) {
-      console.log("YEE ATTAMPTED --", key, value);
       if (value.attempted) count++;
     }
 

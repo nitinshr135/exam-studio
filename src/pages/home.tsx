@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import RightIcon from "@/assets/icons/right-arrow.svg";
 import { UsePaper } from "@/hooks/paper-context";
-import Typewriter from "typewriter-effect";
 import { useState } from "react";
 import InputText from "@/components/InputField/input-text";
 import { databases } from "@/appwrite/appwriteConfig";
 import { v4 as uuidv4 } from "uuid";
+import { UseUser } from "@/hooks/user-context";
 
 export default function Home() {
   const { push } = useRouter();
@@ -18,12 +18,20 @@ export default function Home() {
     setSelectedExamHistory,
   } = UsePaper();
 
+  const { user } = UseUser();
+
   const showExamName = (examId: string) => {
     const test = examinationPapers?.find(
       (exam) => exam.collectionId === examId
     );
     return test;
   };
+
+  const selfCreatedExams = () =>
+    examinationPapers?.filter((paper) => paper.createdBy === user.$id);
+
+  const globalExams = () =>
+    examinationPapers?.filter((paper) => paper.createdBy !== user.$id);
 
   const [showExamNameInput, setShowExamNameInput] = useState<boolean>(false);
   const [newExamName, setNewExamName] = useState<string>("");
@@ -36,6 +44,7 @@ export default function Home() {
         uuidv4(),
         {
           examName: newExamName,
+          createdBy: user.$id,
         }
       );
 
@@ -56,26 +65,58 @@ export default function Home() {
       <Navbar />
       <div className="w-full h-full mt-10 flex flex-col sm:flex-row">
         <div className="lg:w-2/3 flex flex-col text-left gap-12">
-          <h1 className="font-bold text-3xl mb-2 text-white">Global Tests</h1>
-          {examinationPapers?.map((paper, i) => (
-            <div
-              key={i}
-              className="bg-white w-full h-12 rounded-3xl
+          {globalExams()?.length! > 0 && (
+            <>
+              <h1 className="font-bold text-3xl mb-2 text-white">
+                Global Tests
+              </h1>
+              {globalExams()?.map((paper, i) => (
+                <div
+                  key={i}
+                  className="bg-white w-full h-12 rounded-3xl
             flex justify-between items-center px-8 gap-5
             cursor-pointer shadow-sm ease-in-out duration-150
             hover:shadow-2xl hover:-translate-y-2 hover:translate-x-2
             hover:bg-slate-100 border border-gray-600"
-              onClick={() => {
-                push(`/exam-hall/${paper.collectionId}?start=false`);
-                setSelectedExam(paper);
-              }}
-            >
-              <h1 className="text-lg font-medium">
-                {i + 1}. {paper.name}
+                  onClick={() => {
+                    push(`/exam-hall/${paper.collectionId}?start=false`);
+                    setSelectedExam(paper);
+                  }}
+                >
+                  <h1 className="text-lg font-medium">
+                    {i + 1}. {paper.name}
+                  </h1>
+                  <Image src={RightIcon} width={18} height={10} alt="visit" />
+                </div>
+              ))}
+            </>
+          )}
+          {selfCreatedExams()?.length! > 0 && (
+            <>
+              <h1 className="font-bold text-3xl mb-2 text-white">
+                Created by You
               </h1>
-              <Image src={RightIcon} width={18} height={10} alt="visit" />
-            </div>
-          ))}
+              {selfCreatedExams()?.map((paper, i) => (
+                <div
+                  key={i}
+                  className="bg-white w-full h-12 rounded-3xl
+            flex justify-between items-center px-8 gap-5
+            cursor-pointer shadow-sm ease-in-out duration-150
+            hover:shadow-2xl hover:-translate-y-2 hover:translate-x-2
+            hover:bg-slate-100 border border-gray-600"
+                  onClick={() => {
+                    push(`/exam-hall/${paper.collectionId}?start=false`);
+                    setSelectedExam(paper);
+                  }}
+                >
+                  <h1 className="text-lg font-medium">
+                    {i + 1}. {paper.name}
+                  </h1>
+                  <Image src={RightIcon} width={18} height={10} alt="visit" />
+                </div>
+              ))}
+            </>
+          )}
 
           <h1 className="font-bold text-3xl mb-2 text-white">
             Your Test History
@@ -147,7 +188,7 @@ export default function Home() {
           text-xl"
               onClick={() => setShowExamNameInput(true)}
             >
-              Create a Test
+              Create new Test
             </button>
           )}
         </div>

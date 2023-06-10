@@ -9,7 +9,7 @@ const NavbarWithLogin = () => {
       className="backdrop-blur-2xl fixed left-0 top-0 w-full py-6 px-6 lg:px-12 border-b border-white-
           flex justify-between items-center flex-row gap-6"
     >
-      <h1 className="font-semibold text-base lg:text-xl">Exam Studio</h1>
+      <h1 className="font-bold text-base sm:text-2xl text-white">ExamStudio</h1>
       <p className="">
         <button
           className="px-10 bg-white border border-black h-9 rounded-full shadow-sm

@@ -22,7 +22,8 @@ const Navbar = () => {
         </div>
       </div>
       <button
-        className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white font-medium hover:opacity-90 ease-in-out"
+        className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm
+        text-white font-medium hover:opacity-90 ease-in-out"
         onClick={() => logout()}
       >
         Logout

@@ -6,18 +6,17 @@ import RightIcon from "@/assets/icons/right-arrow.svg";
 import { databases } from "@/appwrite/appwriteConfig";
 import { useEffect, useState } from "react";
 import { Query } from "appwrite";
+import config from "@/config";
 
 const Result = () => {
   const { query, push } = useRouter();
-  console.log("YEE QUERY --", query, query.resultId as string);
 
   const [result, setResult] = useState<any>();
-  console.log("YEE RESULT --", result);
 
   const loadResult = async () => {
     let promise = databases.listDocuments(
-      "647cccd637b162c557f3",
-      "6480edbcf330b7e4ad83",
+      config.appwrite.PROJECT_ID,
+      config.appwrite.USER_EXAM_HISTORY,
       [Query.equal("$id", query.resultId as string)]
     );
 
@@ -54,7 +53,7 @@ const Result = () => {
             />
             Go Home
           </div>
-          <h1 className="text-5xl font-bold text-center">Result</h1>
+          <div className="text-5xl font-bold text-center">Result</div>
           <div className="text-left font-semibold">
             Submitted at :
             <div>
@@ -76,9 +75,9 @@ const Result = () => {
           >
             <div className="text-3xl font-semibold">
               Total Questions:{" "}
-              <h1 className="text-4xl text-green-500">
+              <div className="text-4xl text-green-500">
                 {result?.attempted + result?.unattempted}
-              </h1>
+              </div>
             </div>
           </div>
           <div
@@ -88,11 +87,11 @@ const Result = () => {
           >
             <div className="text-3xl font-semibold">
               Attempted:{" "}
-              <h1 className="text-4xl text-green-500">{result?.attempted}</h1>
+              <div className="text-4xl text-green-500">{result?.attempted}</div>
             </div>
             <div className="text-3xl font-semibold">
               Unattempted:{" "}
-              <h1 className="text-4xl text-red-500">{result?.unattempted}</h1>
+              <div className="text-4xl text-red-500">{result?.unattempted}</div>
             </div>
           </div>
           <div
@@ -102,12 +101,12 @@ const Result = () => {
           >
             <div className="text-3xl font-semibold">
               Marks Obtained:{" "}
-              <h1 className="text-4xl text-green-500">
+              <div className="text-4xl text-green-500">
                 {result?.marksObtained}
-              </h1>
+              </div>
             </div>
             <div className="text-3xl font-semibold">
-              Total Marks: <h1 className="text-4xl">{result?.totalMarks}</h1>
+              Total Marks: <div className="text-4xl">{result?.totalMarks}</div>
             </div>
           </div>
         </div>
@@ -117,7 +116,7 @@ const Result = () => {
             hover:-translate-y-2 duration-100
             flex flex-col gap-2 justify-center items-center"
           >
-            <h2 className="text-2xl font-semibold">Percentage:</h2>
+            <div className="text-2xl font-semibold">Percentage:</div>
             <CircularPercentageWheel
               totalMarks={result?.totalMarks}
               correctMarks={result?.marksObtained}
