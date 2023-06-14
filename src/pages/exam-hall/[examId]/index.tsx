@@ -11,19 +11,12 @@ import MultipleChoiceQuestion from "@/components/Misc/multiple-choice-question";
 
 export default function ExamHall() {
   const { query } = useRouter();
-  const { setStartTimer, setTimerDurationInSecs } = UseTimer();
+  const { setStartTimer, timerDurationInSecs } = UseTimer();
   const { setModalOpen, setModalType, setModalOption } = UseModal();
 
   const [questions, setQuestions] = useState<any>(); // Question set for the examination
 
-  const [attemptedNmber, setAttemptedNumber] = useState<number>(0);
-  const [unattemptedNmber, setUnattemptedNumber] = useState<number>(0);
-
-  const marksHashmap: Map<number, number> = new Map();
-
-  const [totalMarks, setTotalMarks] = useState<number>(0);
-
-  const [answers, setAnswers] = useState<Map<number, number>>(new Map());
+  const [marksMap, setMarksMap] = useState(new Map());
 
   // Load the examination questions once we are in the examination page
   const loadExaminationQuestions = async (collectionId: string) => {
@@ -47,48 +40,57 @@ export default function ExamHall() {
     loadExaminationQuestions(query.examId as string);
   }, [query.examId]);
 
-  // COunt the number of attempted/unattempted questions
-  const countElementsWithZero = (hashmap: any) => {
-    let count = 0;
-
-    for (const [key, value] of hashmap) {
-      if (value.attempted) count++;
-    }
-
-    setAttemptedNumber(count);
-    setUnattemptedNumber(questions.length - count);
-  };
-
   const handleMarksObtained = (i: number, mark: number, attempted: boolean) => {
     // using HASH MAP to set a track of questions vs marks, and to get a precise total marks
-    const tempHashmap = marksHashmap;
-    marksHashmap.set(i, mark);
-    // tempHashmap.forEach((value, key) => marksHashmap.set(key, value));
-    countElementsWithZero(marksHashmap);
+    setMarksMap(
+      (map) => new Map(map.set(i, { mark: mark, attempted: attempted }))
+    );
   };
 
-  // const countMarks = () => {
-  //   let sum = 0;
-  //   marksHashmap.forEach((attempt) => {
-  //     sum += attempt.mark;
-  //   });
-  // };
+  const countMarks = () => {
+    let sum = 0;
+    marksMap.forEach((attempt) => {
+      sum += attempt.mark;
+    });
+    return sum;
+  };
+
+  const countAttemptedNumber = () => {
+    let count = 0;
+    marksMap.forEach((attempt) => {
+      if (!!attempt.attempted) count++;
+    });
+    return { attempted: count, unattemptedNmber: questions?.length - count };
+  };
+
+  const countTotalMarks = () => {
+    let sum = 0;
+    questions?.forEach((question: any) => {
+      sum += question?.mark;
+    });
+    return sum;
+  };
 
   useEffect(() => {
     if ((query.start as string) === "true") {
       setStartTimer(true);
-      setTimerDurationInSecs(5400);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   useEffect(() => {
+    // To handle exam submit when the browser is reloaded
     if ((query.start as string) === "true") {
       const handleBeforeUnload = (event: BeforeUnloadEvent) => {
         event.preventDefault();
         event.returnValue = "Are you sure";
         setModalType("submitExam");
-        setModalOption({ attemptedNmber, unattemptedNmber });
+        setModalOption({
+          attemptedNo: countAttemptedNumber().attempted,
+          unattemptedNo: countAttemptedNumber().unattemptedNmber,
+          marks: countMarks(),
+          totalMarks: countTotalMarks(),
+        });
         setModalOpen(true);
       };
 
@@ -96,7 +98,12 @@ export default function ExamHall() {
         if (event.code === "F5" || (event.ctrlKey && event.code === "KeyR")) {
           event.preventDefault();
           setModalType("submitExam");
-          setModalOption({ attemptedNmber, unattemptedNmber });
+          setModalOption({
+            attemptedNo: countAttemptedNumber().attempted,
+            unattemptedNo: countAttemptedNumber().unattemptedNmber,
+            marks: countMarks(),
+            totalMarks: countTotalMarks(),
+          });
           setModalOpen(true);
         }
       };
@@ -112,16 +119,34 @@ export default function ExamHall() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleSubmit = () => {
+    setModalType("submitExam");
+    setModalOption({
+      attemptedNo: countAttemptedNumber().attempted,
+      unattemptedNo: countAttemptedNumber().unattemptedNmber,
+      marks: countMarks(),
+      totalMarks: countTotalMarks(),
+    });
+    setModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (timerDurationInSecs === 1) handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerDurationInSecs]);
+
   return (
     <>
       <NavbarExam
-        attemptedNo={attemptedNmber}
-        unattemptedNo={unattemptedNmber}
+        attemptedNo={countAttemptedNumber().attempted}
+        unattemptedNo={countAttemptedNumber().unattemptedNmber}
+        totalMarks={countTotalMarks()}
+        marks={countMarks()}
       />
       {(query.start as string) === "false" ? (
         <Instructions isDisabled={!questions} />
       ) : (
-        <div className="flex flex-col gap-10 w-full">
+        <div className="flex flex-col gap-10 w-full mt-16 lg:mt-6">
           <div className="flex flex-col gap-10">
             {questions?.map((question: any, i: number) => (
               <MultipleChoiceQuestion
@@ -134,8 +159,6 @@ export default function ExamHall() {
                 positiveMark={question.mark}
                 negativeMark={question.negativeMark}
                 markObtained={handleMarksObtained}
-                totalMarks={totalMarks}
-                setMarkObtained={setTotalMarks}
               />
             ))}
           </div>
@@ -144,11 +167,7 @@ export default function ExamHall() {
             <button
               className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white
           font-medium hover:opacity-90 ease-in-out"
-              onClick={() => {
-                setModalType("submitExam");
-                setModalOption({ attemptedNo: 78, unattemptedNo: 22 });
-                setModalOpen(true);
-              }}
+              onClick={() => handleSubmit()}
             >
               Submit
             </button>

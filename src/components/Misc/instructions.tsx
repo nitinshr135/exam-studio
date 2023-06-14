@@ -1,3 +1,5 @@
+import { UsePaper } from "@/hooks/paper-context";
+import { UseTimer } from "@/hooks/timer-context";
 import { useRouter } from "next/router";
 
 interface IInstructionProps {
@@ -6,6 +8,9 @@ interface IInstructionProps {
 
 const Instructions = ({ isDisabled }: IInstructionProps) => {
   const { query, push } = useRouter();
+
+  const { setTimerDurationInSecs } = UseTimer();
+  const { selectedExam } = UsePaper();
 
   const handleShareByEmail = () => {
     const url = window.location.href;
@@ -54,7 +59,10 @@ const Instructions = ({ isDisabled }: IInstructionProps) => {
           className="mt-8 px-8 h-9 bg-[#0D99FF] rounded-3xl shadow-sm
             text-white font-medium hover:opacity-90 ease-in-out
               disabled:opacity-80 disabled:cursor-not-allowed"
-          onClick={() => push(`/exam-hall/${query.examId}?start=true`)}
+          onClick={() => {
+            push(`/exam-hall/${query.examId}?start=true`);
+            setTimerDurationInSecs(selectedExam?.examDuration * 60);
+          }}
           disabled={isDisabled}
         >
           {isDisabled ? "Loading Exam" : "Start Exam"}

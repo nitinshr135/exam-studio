@@ -20,10 +20,6 @@ const Result = () => {
     setOptions(options.map((option, i) => (i === id ? value : option)));
   };
 
-  const removeOption = (id: number) => {
-    setOptions(options.filter((option, i) => i !== id));
-  };
-
   const submitQuestion = async () => {
     const payload = {
       ques: question,

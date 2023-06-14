@@ -49,11 +49,12 @@ export default function History() {
                   setSelectedExamHistory(exam);
                 }}
               >
-                <p className="text-xl truncate font-semibold mb-1">
+                <p className="text-2xl truncate font-semibold mb-1">
                   {showExamName(exam.examId as string)?.name}
                 </p>
-                <p className="text-xs font-semibold">id: {exam.examId}</p>
+                <p className="text-sm font-semibold">id: {exam.examId}</p>
                 <p className="my-4 font-medium text-sm">
+                  Attempted Date:{" "}
                   {new Date(exam.sumbittedAt).toLocaleDateString("en-us", {
                     hour: "2-digit",
                     minute: "2-digit",

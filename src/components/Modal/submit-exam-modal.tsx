@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { UseModal } from "@/hooks/modal-context";
 import { UseTimer } from "@/hooks/timer-context";
@@ -29,10 +29,10 @@ const SubmitExamModal = () => {
         {
           examId: query.examId,
           userId: user?.$id,
-          marksObtained: 83.4,
-          attempted: 26,
-          unattempted: 24,
-          totalMarks: 100,
+          marksObtained: modalOption.marks,
+          attempted: modalOption.attemptedNo,
+          unattempted: modalOption.unattemptedNo,
+          totalMarks: modalOption.totalMarks,
         }
       );
 
@@ -49,6 +49,11 @@ const SubmitExamModal = () => {
       setModalOpen(false);
     }
   };
+
+  useEffect(() => {
+    if (timerDurationInSecs === 0) handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerDurationInSecs]);
 
   return (
     <div

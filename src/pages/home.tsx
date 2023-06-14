@@ -8,6 +8,7 @@ import InputText from "@/components/InputField/input-text";
 import { databases } from "@/appwrite/appwriteConfig";
 import { v4 as uuidv4 } from "uuid";
 import { UseUser } from "@/hooks/user-context";
+import config from "@/config";
 
 export default function Home() {
   const { push } = useRouter();
@@ -23,15 +24,17 @@ export default function Home() {
 
   const [showExamNameInput, setShowExamNameInput] = useState<boolean>(false);
   const [newExamName, setNewExamName] = useState<string>("");
+  const [newExamDuration, setNewDuration] = useState<number>();
 
   const handleCreateTest = () => {
-    if (!!newExamName) {
+    if (!!newExamName && !!newExamDuration) {
       const promise = databases.createDocument(
-        "647cccd637b162c557f3",
-        "647cf4bf200f3913bdfc",
+        config.appwrite.PROJECT_ID,
+        config.appwrite.QUESTION_PAPERS_ID,
         uuidv4(),
         {
           examName: newExamName,
+          examDuration: newExamDuration,
           createdBy: user?.$id,
         }
       );
@@ -51,7 +54,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="w-full h-full mt-10 flex flex-col sm:flex-row">
+      <div className="w-full h-full mt-28 lg:mt-10 flex flex-col lg:flex-row">
         <div className="lg:w-2/3 flex flex-col text-left gap-12">
           {selfCreatedExams()?.length! > 0 && (
             <>
@@ -61,7 +64,7 @@ export default function Home() {
               {selfCreatedExams()?.map((paper, i) => (
                 <div
                   key={i}
-                  className="bg-white w-full h-12 rounded-3xl
+                  className="bg-[white] w-full h-12 rounded-3xl
             flex justify-between items-center px-8 gap-5
             cursor-pointer shadow-sm ease-in-out duration-150
             hover:shadow-2xl hover:-translate-y-2 hover:translate-x-2
@@ -126,20 +129,32 @@ export default function Home() {
             </p>
           </div>
           {showExamNameInput ? (
-            <div className="flex flex-row gap-4 items-center">
-              <InputText
-                classname="bg-white h-12 rounded-2xl w-full text-black font-medium"
-                text={newExamName}
-                setText={setNewExamName}
-                placeholder="Name of the test"
-              />
-              <div
+            <div className="flex flex-row gap-2 w-full justify-between items-center">
+              <div className="flex flex-col gap-4">
+                <InputText
+                  classname="bg-white h-12 rounded-2xl w-full text-black font-medium"
+                  text={newExamName}
+                  setText={setNewExamName}
+                  placeholder="Name of the test"
+                />
+                <InputText
+                  type="number"
+                  classname="bg-white h-12 rounded-2xl w-full text-black font-medium"
+                  text={newExamDuration?.toString() || ""}
+                  setText={setNewDuration}
+                  placeholder="Duration(In Minutes)"
+                />
+              </div>
+
+              <button
                 className="bg-white hover:bg-slate-100 rounded-full
-              flex items-center justify-center h-10 w-10 shrink-0 cursor-pointer"
+              flex items-center justify-center h-10 w-10 shrink-0 cursor-pointer
+              disabled:cursor-not-allowed"
                 onClick={() => handleCreateTest()}
+                disabled={!newExamName || !newExamDuration}
               >
                 <Image src={RightIconBlack} width={14} height={10} alt="next" />
-              </div>
+              </button>
             </div>
           ) : (
             <button

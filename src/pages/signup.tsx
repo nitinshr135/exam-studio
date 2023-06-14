@@ -1,5 +1,4 @@
 import LoginButton from "@/components/Button/login-button";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Link from "next/link";
 import NavbarWithLogin from "@/components/Navbar/navbar-login";
@@ -9,7 +8,6 @@ import Lottie from "react-lottie";
 import animationData from "../assets/lottie/exam-lottie.json";
 
 export default function Signup() {
-  const { push } = useRouter();
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

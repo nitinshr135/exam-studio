@@ -71,6 +71,7 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
               name: document.examName,
               collectionId: document?.$id,
               createdBy: document.createdBy,
+              examDuration: document.examDuration,
             }))
           );
 

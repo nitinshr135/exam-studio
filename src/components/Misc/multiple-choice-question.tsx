@@ -12,8 +12,6 @@ interface IMultipleChoiceQuestion {
   positiveMark: number;
   negativeMark: number;
   markObtained: (i: number, mark: number, attempted: boolean) => void;
-  totalMarks: number;
-  setMarkObtained: (mark: any) => void;
 }
 
 const MultipleChoiceQuestion = ({
@@ -25,30 +23,68 @@ const MultipleChoiceQuestion = ({
   positiveMark,
   negativeMark,
   markObtained,
-  totalMarks,
-  setMarkObtained,
 }: IMultipleChoiceQuestion) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string[] | null>(null);
   const [mark, setMark] = useState<number>(0);
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
-  const handleAddAnswer = (newString: string) => {
-    setIsClicked(true);
-    if (!isMultiSelect) setSelectedAnswer([newString]);
+  const handleAddAnswer = async (newString: string) => {
+    if (!isMultiSelect) await setSelectedAnswer([newString]);
     else {
       const updatedAnswers = !selectedAnswer
         ? [newString]
         : [...selectedAnswer, newString];
-      setSelectedAnswer(updatedAnswers);
+      await setSelectedAnswer(updatedAnswers);
     }
+    // handleTotalMarks();
   };
 
-  const handleDeleteAnswer = (stringToDelete: string) => {
+  const handleDeleteAnswer = async (stringToDelete: string) => {
     const updatedAnswers = !!selectedAnswer
       ? selectedAnswer.filter((str) => str !== stringToDelete)
       : [];
-    setSelectedAnswer(updatedAnswers);
+    await setSelectedAnswer(updatedAnswers);
+    // handleTotalMarks();
   };
+
+  // const handleTotalMarks = () => {
+  //   const isAnswerCorrect =
+  //     JSON.stringify(selectedAnswer?.sort()) === JSON.stringify(answer?.sort());
+
+  //   if (!isClicked) {
+  //     setNoAttempted(noAttempted + 1);
+  //     setIsClicked(true);
+  //     if (isAnswerCorrect) {
+  //       setMarkObtained(totalMarks + positiveMark);
+  //       setMark(positiveMark);
+  //     } else {
+  //       setMarkObtained(totalMarks - negativeMark);
+  //       setMark(negativeMark);
+  //     }
+  //   } else if (isClicked && selectedAnswer?.length === 0) {
+  //     setNoAttempted(noAttempted - 1);
+  //     setIsClicked(false);
+  //     if (mark === positiveMark) {
+  //       setMarkObtained(totalMarks - positiveMark);
+  //       setMark(positiveMark);
+  //     } else {
+  //       setMarkObtained(totalMarks + negativeMark);
+  //       setMark(negativeMark);
+  //     }
+  //   } else if (isClicked && !!selectedAnswer && selectedAnswer?.length > 0) {
+  //     if (isAnswerCorrect) {
+  //       if (mark === negativeMark) {
+  //         setMarkObtained(totalMarks + positiveMark + negativeMark);
+  //         setMark(positiveMark);
+  //       }
+  //     } else {
+  //       if (mark === positiveMark) {
+  //         setMarkObtained(totalMarks - positiveMark - negativeMark);
+  //         setMark(negativeMark);
+  //       }
+  //     }
+  //   }
+  // };
 
   // To grant positive marks if the selected answer(s) are correct and negative marks if otherwise
   useEffect(() => {
@@ -60,30 +96,30 @@ const MultipleChoiceQuestion = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAnswer]);
 
-  // To grant positive marks if the selected answer(s) are correct and negative marks if otherwise
+  // // To grant positive marks if the selected answer(s) are correct and negative marks if otherwise
   // useEffect(() => {
-  //   const isAnswerCorrect =
-  //     JSON.stringify(selectedAnswer?.sort()) === JSON.stringify(answer?.sort());
+  //   handleTotalMarks();
 
-  //   if (isAnswerCorrect) {
-  //     if (mark === positiveMark) setMarkObtained(totalMarks);
-  //     if (mark === negativeMark)
-  //       setMarkObtained(negativeMark + positiveMark + totalMarks);
-  //     else
-  //       isAnswerCorrect
-  //         ? setMarkObtained(positiveMark + totalMarks)
-  //         : setMarkObtained(negativeMark + totalMarks);
-  //   }
-  //   if (!isAnswerCorrect) {
-  //     if (mark === positiveMark)
-  //       setMarkObtained(negativeMark + totalMarks - positiveMark);
-  //     if (mark === negativeMark) setMarkObtained(totalMarks);
-  //     else
-  //       isAnswerCorrect
-  //         ? setMarkObtained(positiveMark + totalMarks)
-  //         : setMarkObtained(negativeMark + totalMarks);
-  //   }
-  //   isAnswerCorrect ? setMark(positiveMark) : setMark(negativeMark);
+  //   // if (isAnswerCorrect) {
+  //   //   if (mark === positiveMark) setMarkObtained(totalMarks);
+  //   //   if (mark === negativeMark)
+  //   //     setMarkObtained(negativeMark + positiveMark + totalMarks);
+  //   //   else
+  //   //     isAnswerCorrect
+  //   //       ? setMarkObtained(positiveMark + totalMarks)
+  //   //       : setMarkObtained(negativeMark + totalMarks);
+  //   // }
+  //   // if (!isAnswerCorrect) {
+  //   //   if (mark === positiveMark)
+  //   //     setMarkObtained(negativeMark + totalMarks - positiveMark);
+  //   //   if (mark === negativeMark) setMarkObtained(totalMarks);
+  //   //   else
+  //   //     isAnswerCorrect
+  //   //       ? setMarkObtained(positiveMark + totalMarks)
+  //   //       : setMarkObtained( totalMarks - negativeMark);
+  //   // }
+  //   // if (isAnswerCorrect) setMark(positiveMark);
+  //   // else setMark(negativeMark);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [selectedAnswer]);
 

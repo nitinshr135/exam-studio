@@ -9,14 +9,20 @@ import TimeConverter from "../Misc/time-converter";
 interface INavbarExam {
   attemptedNo: number;
   unattemptedNo: number;
+  totalMarks: number;
+  marks: number;
 }
 
-const NavbarExam = ({ attemptedNo, unattemptedNo }: INavbarExam) => {
-  const { selectedExam } = UsePaper();
-  const { setModalOpen, setModalType, setModalOption } = UseModal();
-
+const NavbarExam = ({
+  attemptedNo,
+  unattemptedNo,
+  totalMarks,
+  marks,
+}: INavbarExam) => {
   const { query } = useRouter();
 
+  const { selectedExam } = UsePaper();
+  const { setModalOpen, setModalType, setModalOption } = UseModal();
   const { timerDurationInSecs, startTimer } = UseTimer();
 
   return (
@@ -38,7 +44,12 @@ const NavbarExam = ({ attemptedNo, unattemptedNo }: INavbarExam) => {
         font-medium hover:opacity-90 ease-in-out flex flex-row gap-3 justify-between items-center"
           onClick={() => {
             setModalType("submitExam");
-            setModalOption({ attemptedNo, unattemptedNo });
+            setModalOption({
+              attemptedNo: attemptedNo,
+              unattemptedNo: unattemptedNo,
+              marks: marks,
+              totalMarks: totalMarks,
+            });
             setModalOpen(true);
           }}
         >

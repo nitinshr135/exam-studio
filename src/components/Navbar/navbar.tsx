@@ -1,7 +1,6 @@
 "use client";
 
 import { UseUser } from "@/hooks/user-context";
-import Skeleton from "react-loading-skeleton";
 import { ProfileDropdown } from "../Misc/profile-dropdown";
 import Image from "next/image";
 import NavLogo from "../../assets/icons/nav-logo.svg";
@@ -18,7 +17,8 @@ const Navbar = () => {
   return (
     <div
       className="backdrop-blur-2xl fixed left-0 top-0 w-full py-6 px-6 lg:px-12 border-b border-white-
-          flex justify-between flex-col lg:flex-row gap-6 z-40 bg-indigo-900"
+          flex justify-between flex-col lg:flex-row items-center gap-6 z-40 bg-indigo-900
+          mb-0 lg:mb-16"
     >
       <Image
         src={NavLogo}
@@ -36,17 +36,7 @@ const Navbar = () => {
           </span>
         </div>
       </div>
-      {true ? (
-        <ProfileDropdown />
-      ) : (
-        <Skeleton
-          width={40}
-          height={40}
-          borderRadius={9999}
-          duration={2}
-          containerClassName="flex"
-        />
-      )}
+      <ProfileDropdown />
     </div>
   );
 };
