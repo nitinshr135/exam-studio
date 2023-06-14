@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { UseModal } from "@/hooks/modal-context";
 import { UseTimer } from "@/hooks/timer-context";
@@ -6,6 +6,7 @@ import { databases } from "@/appwrite/appwriteConfig";
 import { UseUser } from "@/hooks/user-context";
 import { useRouter } from "next/router";
 import config from "@/config";
+import TimeConverter from "../Misc/time-converter";
 
 const SubmitExamModal = () => {
   const { setModalOpen, modalOption } = UseModal();
@@ -27,7 +28,7 @@ const SubmitExamModal = () => {
         uuidv4(),
         {
           examId: query.examId,
-          userId: user.$id,
+          userId: user?.$id,
           marksObtained: 83.4,
           attempted: 26,
           unattempted: 24,
@@ -38,7 +39,7 @@ const SubmitExamModal = () => {
       promise.then(
         function (response) {
           console.log(response);
-          push(`/exam-hall/${query.examId}/result/${response.$id}`);
+          push(`/exam-hall/${query.examId}/result/${response?.$id}`);
         },
         function (error) {
           console.log(error);
@@ -74,9 +75,9 @@ const SubmitExamModal = () => {
           </p>
         </div>
         {startTimer && (
-          <h3 className="font-bold text-lg">
-            Time left - {timerDurationInSecs} seconds
-          </h3>
+          <div className="font-bold text-lg">
+            Time left : <TimeConverter seconds={timerDurationInSecs} />
+          </div>
         )}
         <div className="flex flex-row gap-12 justify-center">
           <button

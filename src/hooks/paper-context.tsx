@@ -69,7 +69,7 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
           setExaminationPapers(
             (response as any).documents.map((document: any) => ({
               name: document.examName,
-              collectionId: document.$id,
+              collectionId: document?.$id,
               createdBy: document.createdBy,
             }))
           );
@@ -83,10 +83,7 @@ export const PaperProvider = ({ children }: { children: ReactNode }) => {
       }
     );
   };
-  console.log(
-    "yee process.env.APPWRITE_PROJECT_ID,",
-    config.appwrite.PROJECT_ID
-  );
+
   const userExamHistory = async () => {
     let promise = databases.listDocuments(
       config.appwrite.PROJECT_ID,

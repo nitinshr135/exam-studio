@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { databases } from "@/appwrite/appwriteConfig";
-import Instructions from "@/components/instructions";
-import MultipleChoiceQuestion from "@/components/multiple-choice-question";
 import NavbarExam from "@/components/Navbar/navbar-exam";
 import { UseModal } from "@/hooks/modal-context";
 import { UseTimer } from "@/hooks/timer-context";
-import { UseUser } from "@/hooks/user-context";
-import { UsePaper } from "@/hooks/paper-context";
 import { Query } from "appwrite";
 import config from "@/config";
+import Instructions from "@/components/Misc/instructions";
+import MultipleChoiceQuestion from "@/components/Misc/multiple-choice-question";
 
 export default function ExamHall() {
   const { query } = useRouter();
@@ -21,8 +19,10 @@ export default function ExamHall() {
   const [attemptedNmber, setAttemptedNumber] = useState<number>(0);
   const [unattemptedNmber, setUnattemptedNumber] = useState<number>(0);
 
-  var marksHashmap: Map<number, { attempted: boolean; mark: number }> =
-    new Map();
+  const marksHashmap: Map<number, number> = new Map();
+
+  const [totalMarks, setTotalMarks] = useState<number>(0);
+
   const [answers, setAnswers] = useState<Map<number, number>>(new Map());
 
   // Load the examination questions once we are in the examination page
@@ -61,17 +61,18 @@ export default function ExamHall() {
 
   const handleMarksObtained = (i: number, mark: number, attempted: boolean) => {
     // using HASH MAP to set a track of questions vs marks, and to get a precise total marks
-    marksHashmap.set(i, { attempted, mark });
-    console.log("YEE marksHashmap", marksHashmap);
+    const tempHashmap = marksHashmap;
+    marksHashmap.set(i, mark);
+    // tempHashmap.forEach((value, key) => marksHashmap.set(key, value));
     countElementsWithZero(marksHashmap);
   };
 
-  const countMarks = () => {
-    let sum = 0;
-    marksHashmap.forEach((attempt) => {
-      sum += attempt.mark;
-    });
-  };
+  // const countMarks = () => {
+  //   let sum = 0;
+  //   marksHashmap.forEach((attempt) => {
+  //     sum += attempt.mark;
+  //   });
+  // };
 
   useEffect(() => {
     if ((query.start as string) === "true") {
@@ -82,30 +83,32 @@ export default function ExamHall() {
   }, [query]);
 
   useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = "Are you sure"; // This is necessary for Chrome
-      setModalType("submitExam");
-      setModalOption({ attemptedNmber, unattemptedNmber });
-      setModalOpen(true);
-    };
-
-    const handleRefresh = (event: KeyboardEvent) => {
-      if (event.code === "F5" || (event.ctrlKey && event.code === "KeyR")) {
+    if ((query.start as string) === "true") {
+      const handleBeforeUnload = (event: BeforeUnloadEvent) => {
         event.preventDefault();
+        event.returnValue = "Are you sure";
         setModalType("submitExam");
         setModalOption({ attemptedNmber, unattemptedNmber });
         setModalOpen(true);
-      }
-    };
+      };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("keydown", handleRefresh);
+      const handleRefresh = (event: KeyboardEvent) => {
+        if (event.code === "F5" || (event.ctrlKey && event.code === "KeyR")) {
+          event.preventDefault();
+          setModalType("submitExam");
+          setModalOption({ attemptedNmber, unattemptedNmber });
+          setModalOpen(true);
+        }
+      };
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("keydown", handleRefresh);
-    };
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("keydown", handleRefresh);
+
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+        window.removeEventListener("keydown", handleRefresh);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -131,11 +134,13 @@ export default function ExamHall() {
                 positiveMark={question.mark}
                 negativeMark={question.negativeMark}
                 markObtained={handleMarksObtained}
+                totalMarks={totalMarks}
+                setMarkObtained={setTotalMarks}
               />
             ))}
           </div>
 
-          <div className="mt-12 w-full flex items-center justify-center">
+          <div className="mt-4 w-full flex items-center justify-center">
             <button
               className="px-10 bg-[#0D99FF] h-9 rounded-3xl shadow-sm text-white
           font-medium hover:opacity-90 ease-in-out"

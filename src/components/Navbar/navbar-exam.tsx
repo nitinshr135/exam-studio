@@ -4,7 +4,7 @@ import { UseModal } from "@/hooks/modal-context";
 import { UsePaper } from "@/hooks/paper-context";
 import { UseTimer } from "@/hooks/timer-context";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import TimeConverter from "../Misc/time-converter";
 
 interface INavbarExam {
   attemptedNo: number;
@@ -19,12 +19,6 @@ const NavbarExam = ({ attemptedNo, unattemptedNo }: INavbarExam) => {
 
   const { timerDurationInSecs, startTimer } = UseTimer();
 
-  const initialMinutes = 60;
-  const initialSeconds = 0;
-
-  const [minutes, setMinutes] = useState(initialMinutes);
-  const [seconds, setSeconds] = useState(initialSeconds);
-
   return (
     <div
       className="backdrop-blur-2xl fixed left-0 top-0 w-full py-6 px-6 lg:px-12 border-b border-gray-300
@@ -34,12 +28,8 @@ const NavbarExam = ({ attemptedNo, unattemptedNo }: INavbarExam) => {
         {!!selectedExam ? selectedExam.name : ""}
       </p>
       {startTimer && query.start === "true" && (
-        <p className="font-medium text-sm">
-          Time Remaining:
-          {timerDurationInSecs < 10
-            ? `0${timerDurationInSecs}`
-            : timerDurationInSecs}{" "}
-          seconds
+        <p className="font-medium text-sm text-white">
+          Time Remaining : <TimeConverter seconds={timerDurationInSecs} />
         </p>
       )}
       {query.start === "true" && (

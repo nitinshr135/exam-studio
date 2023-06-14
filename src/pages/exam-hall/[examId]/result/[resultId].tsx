@@ -41,7 +41,8 @@ const Result = () => {
       <div className="flex flex-col gap-10 mt-10 w-full justify-center items-center">
         <div className="w-full flex flex-col sm:flex-row justify-between gap-8">
           <div
-            className="flex flex-row gap-2 h-min font-semibold items-center cursor-pointer"
+            className="flex flex-row gap-2 h-min font-semibold items-center
+            text-white cursor-pointer"
             onClick={() => push("/home")}
           >
             <Image
@@ -53,8 +54,10 @@ const Result = () => {
             />
             Go Home
           </div>
-          <div className="text-5xl font-bold text-center">Result</div>
-          <div className="text-left font-semibold">
+          <div className="text-5xl font-bold text-center text-[#FFFAF0]">
+            Result
+          </div>
+          <div className="text-left font-semibold text-[#FFFAF0]">
             Submitted at :
             <div>
               {new Date(result?.$createdAt).toLocaleDateString("en-us", {
@@ -70,7 +73,7 @@ const Result = () => {
         <div className="w-full flex flex-col lg:flex-row gap-16 items-center justify-center">
           <div
             className="h-60 w-60 shadow-xl hover:shadow2xl rounded-lg
-            hover:-translate-y-2 duration-100 bg-white
+            hover:-translate-y-2 duration-100 bg-slate-50 hover:bg-white
             text-left flex items-center p-6"
           >
             <div className="text-3xl font-semibold">
@@ -82,7 +85,7 @@ const Result = () => {
           </div>
           <div
             className="h-60 w-60 shadow-xl hover:shadow2xl rounded-lg
-            hover:-translate-y-2 duration-100  bg-white
+            hover:-translate-y-2 duration-100 bg-slate-50 hover:bg-white
             text-left flex flex-col gap-4 p-6"
           >
             <div className="text-3xl font-semibold">
@@ -96,7 +99,7 @@ const Result = () => {
           </div>
           <div
             className="h-60 w-60 shadow-xl hover:shadow2xl rounded-lg
-            hover:-translate-y-2 duration-100
+            hover:-translate-y-2 duration-100 bg-slate-50 hover:bg-white
             text-left flex flex-col gap-4 p-6"
           >
             <div className="text-3xl font-semibold">
@@ -113,7 +116,7 @@ const Result = () => {
         <div className="w-full flex flex-col lg:flex-row gap-16 items-center justify-center">
           <div
             className="h-52 w-52 shadow-xl hover:shadow2xl rounded-lg
-            hover:-translate-y-2 duration-100
+            hover:-translate-y-2 duration-100 bg-slate-50 hover:bg-white
             flex flex-col gap-2 justify-center items-center"
           >
             <div className="text-2xl font-semibold">Percentage:</div>

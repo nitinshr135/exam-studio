@@ -18,6 +18,7 @@ export default function MyApp({ Component, pageProps }: any) {
   return (
     <>
       <Head>
+        <title>ExamStudio</title>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#3b82f6" />
@@ -25,8 +26,7 @@ export default function MyApp({ Component, pageProps }: any) {
           name="description"
           content="Next Gen online exam platform. Create and share your test with modern UI."
         />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_APP_URL} />
-        <meta name="twitter:card" content="photo" key="twitter-card" />
+        <link rel="icon" type="image/svg+xml" href="/examStudioLogo.svg" />
         <meta
           property="og:image"
           content="../../public/exam-studio-meta.jpg"
@@ -55,7 +55,7 @@ export default function MyApp({ Component, pageProps }: any) {
             <PaperProvider>
               <main
                 className={`flex min-h-screen py-32 lg:py-24 px-6 lg:px-12 ${questrial.className}
-                bg-gradient-to-b from-indigo-900 via-indigo-400 to-indigo-900`}
+                bg-gradient-to-b from-indigo-900 via-indigo-500 to-indigo-900`}
               >
                 <Modals />
                 <Component {...pageProps} />

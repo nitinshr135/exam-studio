@@ -6,6 +6,19 @@ interface IInstructionProps {
 
 const Instructions = ({ isDisabled }: IInstructionProps) => {
   const { query, push } = useRouter();
+
+  const handleShareByEmail = () => {
+    const url = window.location.href;
+    const subject = "Check out this Exam on ExamSudio";
+    const body = `I wanted to exam this URL with you: ${url}`;
+
+    const mailToUrl = `mailto:?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailToUrl;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full mt-12">
       <div
@@ -46,6 +59,16 @@ const Instructions = ({ isDisabled }: IInstructionProps) => {
         >
           {isDisabled ? "Loading Exam" : "Start Exam"}
         </button>
+
+        <div className="flex flex-row gap-1 mt-5">
+          If you want to share this exam, please{" "}
+          <div
+            className="hover:underline font-medium cursor-pointer"
+            onClick={() => handleShareByEmail()}
+          >
+            click here!
+          </div>
+        </div>
       </div>
     </div>
   );

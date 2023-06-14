@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ChoiceButton from "./Button/choice-button";
+import ChoiceButton from "../Button/choice-button";
 
 interface IMultipleChoiceQuestion {
   sequence: number;
@@ -12,6 +12,8 @@ interface IMultipleChoiceQuestion {
   positiveMark: number;
   negativeMark: number;
   markObtained: (i: number, mark: number, attempted: boolean) => void;
+  totalMarks: number;
+  setMarkObtained: (mark: any) => void;
 }
 
 const MultipleChoiceQuestion = ({
@@ -23,9 +25,15 @@ const MultipleChoiceQuestion = ({
   positiveMark,
   negativeMark,
   markObtained,
+  totalMarks,
+  setMarkObtained,
 }: IMultipleChoiceQuestion) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string[] | null>(null);
+  const [mark, setMark] = useState<number>(0);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+
   const handleAddAnswer = (newString: string) => {
+    setIsClicked(true);
     if (!isMultiSelect) setSelectedAnswer([newString]);
     else {
       const updatedAnswers = !selectedAnswer
@@ -52,9 +60,36 @@ const MultipleChoiceQuestion = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAnswer]);
 
+  // To grant positive marks if the selected answer(s) are correct and negative marks if otherwise
+  // useEffect(() => {
+  //   const isAnswerCorrect =
+  //     JSON.stringify(selectedAnswer?.sort()) === JSON.stringify(answer?.sort());
+
+  //   if (isAnswerCorrect) {
+  //     if (mark === positiveMark) setMarkObtained(totalMarks);
+  //     if (mark === negativeMark)
+  //       setMarkObtained(negativeMark + positiveMark + totalMarks);
+  //     else
+  //       isAnswerCorrect
+  //         ? setMarkObtained(positiveMark + totalMarks)
+  //         : setMarkObtained(negativeMark + totalMarks);
+  //   }
+  //   if (!isAnswerCorrect) {
+  //     if (mark === positiveMark)
+  //       setMarkObtained(negativeMark + totalMarks - positiveMark);
+  //     if (mark === negativeMark) setMarkObtained(totalMarks);
+  //     else
+  //       isAnswerCorrect
+  //         ? setMarkObtained(positiveMark + totalMarks)
+  //         : setMarkObtained(negativeMark + totalMarks);
+  //   }
+  //   isAnswerCorrect ? setMark(positiveMark) : setMark(negativeMark);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedAnswer]);
+
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-base font-medium">
+      <p className="text-base font-medium text-white">
         Q{sequence}. {questionText}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:w-1/2 gap-6">
