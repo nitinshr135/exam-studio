@@ -6,6 +6,7 @@ import { UseUser } from "@/hooks/user-context";
 import InputText from "../components/InputField/input-text";
 import Lottie from "react-lottie";
 import animationData from "../assets/lottie/exam-lottie.json";
+import CreditsFooter from "@/components/Footer/credits";
 
 export default function Signup() {
   const [username, setUsername] = useState<string>("");
@@ -63,6 +64,7 @@ export default function Signup() {
           </Link>
         </div>
       </div>
+      <CreditsFooter />
     </>
   );
 }
